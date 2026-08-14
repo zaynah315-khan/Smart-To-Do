@@ -1,5 +1,4 @@
  import { useEffect, useState } from "react";
-import "./App.css";
 import { supabase } from "./lib/supabase";
 
 import Login from "./pages/Login";
@@ -8,78 +7,76 @@ import Dashboard from "./pages/Dashboard";
 
 function App() {
   const [session, setSession] = useState(null);
-  const [page, setPage] = useState("login");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Check if user is already logged in
-    getSession();
+  const [page, setPage] = useState("login");
 
-    // Listen for login/logout changes
+  useEffect(() => {
+    let mounted = true;
+
+    async function getInitialSession() {
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
+
+      if (error) {
+        console.error(
+          "Session error:",
+          error
+        );
+      }
+
+      if (mounted) {
+        setSession(session);
+        setLoading(false);
+      }
+    }
+
+    getInitialSession();
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
-      (_event, currentSession) => {
-        setSession(currentSession);
+      (_event, session) => {
+        if (!mounted) return;
 
-        if (currentSession) {
+        setSession(session);
+
+        if (session) {
           setPage("dashboard");
-        } else {
-          setPage("login");
         }
       }
     );
 
     return () => {
+      mounted = false;
       subscription.unsubscribe();
     };
   }, []);
 
-  async function getSession() {
-    const {
-      data: { session: currentSession },
-      error,
-    } = await supabase.auth.getSession();
-
-    if (error) {
-      console.error(
-        "Session error:",
-        error.message
-      );
-    }
-
-    setSession(currentSession);
-
-    if (currentSession) {
-      setPage("dashboard");
-    }
-
-    setLoading(false);
-  }
-
-  // Loading screen
   if (loading) {
     return (
-      <div className="loading-screen">
+      <main className="auth-page">
+        <div className="auth-card">
+          <div className="empty">
+            <div className="loader"></div>
 
-        <div className="loader"></div>
-
-        <h3>Goal Grid</h3>
-
-        <p>
-          Loading your workspace...
-        </p>
-
-      </div>
+            <p>
+              Checking your account...
+            </p>
+          </div>
+        </div>
+      </main>
     );
   }
 
-  // Logged-in user
+  /* USER IS LOGGED IN */
   if (session) {
     return <Dashboard />;
   }
 
-  // Signup page
+  /* SIGNUP PAGE */
   if (page === "signup") {
     return (
       <Signup
@@ -90,7 +87,7 @@ function App() {
     );
   }
 
-  // Login page
+  /* LOGIN PAGE */
   return (
     <Login
       goToSignup={() =>

@@ -2,30 +2,17 @@
 import { supabase } from "../lib/supabase";
 
 function Signup({ goToLogin }) {
-  const [name, setName] =
-    useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [email, setEmail] =
-    useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [password, setPassword] =
-    useState("");
-
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
-
-  const [showPassword, setShowPassword] =
-    useState(false);
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const [error, setError] =
-    useState("");
-
-  const [message, setMessage] =
-    useState("");
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   async function handleSignup(e) {
     e.preventDefault();
@@ -33,39 +20,43 @@ function Signup({ goToLogin }) {
     setError("");
     setMessage("");
 
+    if (!name.trim()) {
+      setError("Please enter your full name.");
+      return;
+    }
+
     if (password !== confirmPassword) {
-      setError(
-        "Passwords do not match."
-      );
+      setError("Passwords do not match.");
       return;
     }
 
     if (password.length < 6) {
-      setError(
-        "Password must be at least 6 characters."
-      );
+      setError("Password must be at least 6 characters.");
       return;
     }
 
     setLoading(true);
 
-    const { error } =
-      await supabase.auth.signUp({
-        email,
-        password,
+    const redirectUrl = window.location.origin;
 
-        options: {
-          data: {
-            full_name: name,
-          },
+    const { error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+
+      options: {
+        emailRedirectTo: redirectUrl,
+
+        data: {
+          full_name: name.trim(),
         },
-      });
+      },
+    });
 
     if (error) {
       setError(error.message);
     } else {
       setMessage(
-        "Account created! Check your email to verify your account."
+        "Account created! Please check your email and verify your account. After verification, you will be redirected to Goal Grid."
       );
 
       setName("");
@@ -77,49 +68,36 @@ function Signup({ goToLogin }) {
     setLoading(false);
   }
 
-
   return (
     <main className="auth-page">
-
       <div className="auth-card">
 
-        {/* IMAGE */}
-
+        {/* SIGNUP IMAGE */}
         <div className="auth-image signup-image">
-
           <img
             src="/assets/signup-illustration.png"
             alt="Signup illustration"
           />
-
         </div>
 
-
-        {/* CONTENT */}
-
+        {/* SIGNUP CONTENT */}
         <div className="auth-content">
 
-          <h1>
-            Create Account! ✨
-          </h1>
+          <h1>Create Account! ✨</h1>
 
           <p className="subtitle">
             Start organizing your tasks today
           </p>
 
-
           <form onSubmit={handleSignup}>
 
-            {/* NAME */}
-
+            {/* FULL NAME */}
             <div className="form-group">
-
               <label htmlFor="name">
                 Full name
               </label>
 
               <div className="input-wrapper">
-
                 <span className="input-icon">
                   👤
                 </span>
@@ -134,22 +112,16 @@ function Signup({ goToLogin }) {
                   }
                   required
                 />
-
               </div>
-
             </div>
 
-
             {/* EMAIL */}
-
             <div className="form-group">
-
               <label htmlFor="email">
                 Email address
               </label>
 
               <div className="input-wrapper">
-
                 <span className="input-icon">
                   ✉
                 </span>
@@ -164,22 +136,16 @@ function Signup({ goToLogin }) {
                   }
                   required
                 />
-
               </div>
-
             </div>
 
-
             {/* PASSWORD */}
-
             <div className="form-group">
-
               <label htmlFor="password">
                 Password
               </label>
 
               <div className="input-wrapper">
-
                 <span className="input-icon">
                   🔒
                 </span>
@@ -194,9 +160,7 @@ function Signup({ goToLogin }) {
                   placeholder="Create a password"
                   value={password}
                   onChange={(e) =>
-                    setPassword(
-                      e.target.value
-                    )
+                    setPassword(e.target.value)
                   }
                   required
                 />
@@ -215,33 +179,29 @@ function Signup({ goToLogin }) {
                       : "Show password"
                   }
                 >
-                  {showPassword
-                    ? "🙈"
-                    : "👁"}
+                  {showPassword ? "🙈" : "👁"}
                 </button>
-
               </div>
-
             </div>
 
-
             {/* CONFIRM PASSWORD */}
-
             <div className="form-group">
-
               <label htmlFor="confirmPassword">
                 Confirm password
               </label>
 
               <div className="input-wrapper">
-
                 <span className="input-icon">
                   🔒
                 </span>
 
                 <input
                   id="confirmPassword"
-                  type="password"
+                  type={
+                    showConfirmPassword
+                      ? "text"
+                      : "password"
+                  }
                   placeholder="Confirm your password"
                   value={confirmPassword}
                   onChange={(e) =>
@@ -252,34 +212,45 @@ function Signup({ goToLogin }) {
                   required
                 />
 
+                <button
+                  type="button"
+                  className="icon-button"
+                  onClick={() =>
+                    setShowConfirmPassword(
+                      !showConfirmPassword
+                    )
+                  }
+                  aria-label={
+                    showConfirmPassword
+                      ? "Hide password"
+                      : "Show password"
+                  }
+                >
+                  {showConfirmPassword
+                    ? "🙈"
+                    : "👁"}
+                </button>
               </div>
-
             </div>
 
-
             {/* ERROR */}
-
             {error && (
               <p className="error">
                 {error}
               </p>
             )}
 
-
             {/* SUCCESS */}
-
             {message && (
               <p className="success">
                 {message}
               </p>
             )}
 
-
-            {/* SIGN UP */}
-
+            {/* SIGN UP BUTTON */}
             <button
               type="submit"
-              className="primary-button"
+              className="primary-button pink-button"
               disabled={loading}
             >
               {loading
@@ -289,9 +260,7 @@ function Signup({ goToLogin }) {
 
           </form>
 
-
           {/* LOGIN */}
-
           <p className="switch-text">
             Already have an account?
 
@@ -304,9 +273,7 @@ function Signup({ goToLogin }) {
           </p>
 
         </div>
-
       </div>
-
     </main>
   );
 }

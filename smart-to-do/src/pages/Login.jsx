@@ -3,17 +3,12 @@ import { supabase } from "../lib/supabase";
 
 function Login({ goToSignup }) {
   const [email, setEmail] = useState("");
-  const [password, setPassword] =
-    useState("");
+  const [password, setPassword] = useState("");
 
-  const [showPassword, setShowPassword] =
-    useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [loading, setLoading] =
-    useState(false);
-
-  const [error, setError] =
-    useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -23,7 +18,7 @@ function Login({ goToSignup }) {
 
     const { error } =
       await supabase.auth.signInWithPassword({
-        email,
+        email: email.trim(),
         password,
       });
 
@@ -36,11 +31,9 @@ function Login({ goToSignup }) {
 
   return (
     <main className="auth-page">
-
       <div className="auth-card">
 
-        {/* IMAGE */}
-
+        {/* LOGIN IMAGE */}
         <div className="auth-image login-image">
           <img
             src="/assets/login-illustration.png"
@@ -48,9 +41,7 @@ function Login({ goToSignup }) {
           />
         </div>
 
-
-        {/* CONTENT */}
-
+        {/* LOGIN CONTENT */}
         <div className="auth-content">
 
           <h1>
@@ -58,23 +49,18 @@ function Login({ goToSignup }) {
           </h1>
 
           <p className="subtitle">
-            Login to continue your
-            productivity journey
+            Login to continue your productivity journey
           </p>
-
 
           <form onSubmit={handleLogin}>
 
             {/* EMAIL */}
-
             <div className="form-group">
-
               <label htmlFor="email">
                 Email address
               </label>
 
               <div className="input-wrapper">
-
                 <span className="input-icon">
                   ✉
                 </span>
@@ -89,22 +75,16 @@ function Login({ goToSignup }) {
                   }
                   required
                 />
-
               </div>
-
             </div>
 
-
             {/* PASSWORD */}
-
             <div className="form-group">
-
               <label htmlFor="password">
                 Password
               </label>
 
               <div className="input-wrapper">
-
                 <span className="input-icon">
                   🔒
                 </span>
@@ -119,9 +99,7 @@ function Login({ goToSignup }) {
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) =>
-                    setPassword(
-                      e.target.value
-                    )
+                    setPassword(e.target.value)
                   }
                   required
                 />
@@ -140,30 +118,22 @@ function Login({ goToSignup }) {
                       : "Show password"
                   }
                 >
-                  {showPassword
-                    ? "🙈"
-                    : "👁"}
+                  {showPassword ? "🙈" : "👁"}
                 </button>
-
               </div>
-
             </div>
 
-
             {/* ERROR */}
-
             {error && (
               <p className="error">
                 {error}
               </p>
             )}
 
-
-            {/* LOGIN BUTTON */}
-
+            {/* LOGIN */}
             <button
               type="submit"
-              className="primary-button"
+              className="primary-button purple-button"
               disabled={loading}
             >
               {loading
@@ -173,9 +143,7 @@ function Login({ goToSignup }) {
 
           </form>
 
-
           {/* SIGNUP */}
-
           <p className="switch-text">
             Don't have an account?
 
@@ -188,9 +156,7 @@ function Login({ goToSignup }) {
           </p>
 
         </div>
-
       </div>
-
     </main>
   );
 }
