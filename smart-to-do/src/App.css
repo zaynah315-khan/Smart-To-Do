@@ -12,11 +12,9 @@
   --bg-main: #fff4f8;
   --bg-secondary: #ffe8f1;
 
-  --card: rgba(255, 255, 255, 0.78);
-  --card-dark: rgba(255, 255, 255, 0.65);
+  --card: rgba(255, 255, 255, 0.86);
 
   --border: rgba(219, 39, 119, 0.12);
-  --border-hover: rgba(219, 39, 119, 0.30);
 
   --text-primary: #4a1730;
   --text-secondary: #8f5570;
@@ -29,16 +27,13 @@
 
   --success: #10b981;
   --danger: #e11d48;
-
-  --shadow:
-    0 20px 60px rgba(190, 24, 93, 0.12);
 }
 
 html,
 body,
 #root {
-  min-height: 100%;
   width: 100%;
+  min-height: 100%;
 }
 
 body {
@@ -51,50 +46,41 @@ body {
     sans-serif;
 
   color: var(--text-primary);
-
   min-height: 100vh;
 }
 
 
 /* =========================================================
-   LOGIN / SIGN UP
-   BRIGHT PASTEL PINK
+   AUTH PAGE
 ========================================================= */
 
-.auth-container,
-.login-container,
-.signup-container,
-.signin-container {
+.auth-page {
   width: 100%;
-
   min-height: 100vh;
 
-  display: flex !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  align-items: center !important;
-
-  justify-content: center !important;
-
-  padding: 30px 20px;
+  padding: 40px 20px;
 
   position: relative;
-
   overflow: hidden;
 
   background:
     radial-gradient(
       circle at 10% 10%,
-      rgba(251, 207, 232, 0.95),
+      rgba(251, 207, 232, 0.9),
       transparent 32%
     ),
     radial-gradient(
       circle at 90% 15%,
-      rgba(249, 168, 212, 0.70),
+      rgba(249, 168, 212, 0.65),
       transparent 32%
     ),
     radial-gradient(
       circle at 50% 100%,
-      rgba(244, 114, 182, 0.35),
+      rgba(244, 114, 182, 0.28),
       transparent 40%
     ),
     linear-gradient(
@@ -105,57 +91,40 @@ body {
     );
 }
 
-
-/* =========================================================
-   AUTH DECORATIVE GLOW
-========================================================= */
-
-.auth-container::before,
-.login-container::before,
-.signup-container::before,
-.signin-container::before {
+.auth-page::before {
   content: "";
 
   position: absolute;
 
   width: 450px;
-
   height: 450px;
 
   top: -200px;
-
   left: -150px;
 
   border-radius: 50%;
 
-  background:
-    rgba(244, 114, 182, 0.20);
+  background: rgba(244, 114, 182, 0.18);
 
   filter: blur(90px);
 
   pointer-events: none;
 }
 
-.auth-container::after,
-.login-container::after,
-.signup-container::after,
-.signin-container::after {
+.auth-page::after {
   content: "";
 
   position: absolute;
 
   width: 400px;
-
   height: 400px;
 
   right: -150px;
-
   bottom: -180px;
 
   border-radius: 50%;
 
-  background:
-    rgba(236, 72, 153, 0.18);
+  background: rgba(236, 72, 153, 0.15);
 
   filter: blur(90px);
 
@@ -167,56 +136,84 @@ body {
    AUTH CARD
 ========================================================= */
 
-.auth-card,
-.login-card,
-.signup-card,
-.signin-card {
-  width: 100% !important;
-
-  max-width: 430px !important;
-
-  margin: auto !important;
+.auth-card {
+  width: 100%;
+  max-width: 470px;
 
   position: relative;
-
   z-index: 5;
 
-  padding: 38px;
+  padding: 30px 40px 36px;
 
-  border-radius: 26px;
+  border-radius: 30px;
 
-  background:
-    rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.88);
 
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.95);
 
   box-shadow:
-    0 30px 80px
-    rgba(190, 24, 93, 0.14),
+    0 30px 80px rgba(190, 24, 93, 0.13),
+    0 8px 30px rgba(244, 114, 182, 0.10);
 
-    0 8px 30px
-    rgba(244, 114, 182, 0.12);
-
-  backdrop-filter: blur(22px);
-
-  -webkit-backdrop-filter: blur(22px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 
 /* =========================================================
-   AUTH HEADING
+   AUTH IMAGE
 ========================================================= */
 
-.auth-card h1,
-.auth-card h2,
-.login-card h1,
-.login-card h2,
-.signup-card h1,
-.signup-card h2,
-.signin-card h1,
-.signin-card h2 {
+.auth-image {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 4px;
+
+  position: relative;
+}
+
+.auth-image img {
+  width: 280px;
+  height: 210px;
+
+  object-fit: contain;
+
+  display: block;
+
+  /*
+    IMPORTANT:
+    PNG transparent image is kept completely clear.
+    No opacity, blur or blend mode.
+  */
+
+  filter:
+    drop-shadow(
+      0 18px 25px rgba(190, 24, 93, 0.14)
+    );
+
+  transform: translateY(-5px);
+
+  transition: transform 0.35s ease;
+}
+
+.auth-image:hover img {
+  transform: translateY(-10px);
+}
+
+
+/* =========================================================
+   AUTH CONTENT
+========================================================= */
+
+.auth-content {
+  width: 100%;
+}
+
+.auth-content h1 {
   color: #831843;
 
   text-align: center;
@@ -229,18 +226,10 @@ body {
 
   letter-spacing: -0.8px;
 
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
-
-/* =========================================================
-   AUTH DESCRIPTION
-========================================================= */
-
-.auth-card p,
-.login-card p,
-.signup-card p,
-.signin-card p {
+.subtitle {
   color: #9d5578;
 
   text-align: center;
@@ -248,6 +237,8 @@ body {
   font-size: 14px;
 
   line-height: 1.6;
+
+  margin-bottom: 25px;
 }
 
 
@@ -255,30 +246,20 @@ body {
    AUTH FORM
 ========================================================= */
 
-.auth-card form,
-.login-card form,
-.signup-card form,
-.signin-card form {
+.auth-content form {
   width: 100%;
 
-  margin-top: 26px;
-
   display: flex;
-
   flex-direction: column;
 
   gap: 15px;
 }
 
+.form-group {
+  width: 100%;
+}
 
-/* =========================================================
-   LABELS
-========================================================= */
-
-.auth-card label,
-.login-card label,
-.signup-card label,
-.signin-card label {
+.form-group label {
   display: block;
 
   color: #831843;
@@ -292,29 +273,61 @@ body {
 
 
 /* =========================================================
-   INPUTS
+   INPUT WRAPPER
 ========================================================= */
 
-.auth-card input,
-.login-card input,
-.signup-card input,
-.signin-card input {
+.input-wrapper {
   width: 100%;
 
-  height: 50px;
+  height: 52px;
 
-  padding: 0 15px;
+  position: relative;
 
-  border-radius: 12px;
+  display: flex;
+  align-items: center;
+}
 
-  border:
-    1px solid
-    #f3b6d0;
+
+/* =========================================================
+   INPUT ICON
+========================================================= */
+
+.input-icon {
+  position: absolute;
+
+  left: 14px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  z-index: 2;
+
+  font-size: 15px;
+
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   AUTH INPUT
+========================================================= */
+
+.input-wrapper input {
+  width: 100%;
+  height: 52px;
+
+  padding: 0 48px 0 42px;
+
+  border-radius: 13px;
+
+  border: 1px solid #f3b6d0;
 
   outline: none;
 
-  background:
-    rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.80);
 
   color: #5b1737;
 
@@ -326,51 +339,96 @@ body {
     box-shadow 0.25s ease;
 }
 
-.auth-card input::placeholder,
-.login-card input::placeholder,
-.signup-card input::placeholder,
-.signin-card input::placeholder {
+.input-wrapper input::placeholder {
   color: #c18ba5;
 }
 
-.auth-card input:hover,
-.login-card input:hover,
-.signup-card input:hover,
-.signin-card input:hover {
+.input-wrapper input:hover {
   border-color: #ec91b8;
 }
 
-.auth-card input:focus,
-.login-card input:focus,
-.signup-card input:focus,
-.signin-card input:focus {
+.input-wrapper input:focus {
   border-color: #ec4899;
 
   background: #ffffff;
 
   box-shadow:
-    0 0 0 3px
-    rgba(236, 72, 153, 0.12);
+    0 0 0 3px rgba(236, 72, 153, 0.11);
 }
 
 
 /* =========================================================
-   AUTH BUTTON
+   PASSWORD EYE BUTTON
 ========================================================= */
 
-.auth-card button,
-.login-card button,
-.signup-card button,
-.signin-card button {
+.input-wrapper .icon-button {
+  position: absolute;
+
+  right: 9px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 34px !important;
+  height: 34px !important;
+
+  min-width: 34px;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: none !important;
+
+  border-radius: 8px;
+
+  background: transparent !important;
+
+  color: #9d5578;
+
+  font-size: 16px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow: none !important;
+
+  z-index: 4;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.input-wrapper .icon-button:hover {
+  background: rgba(236, 72, 153, 0.08) !important;
+
+  color: #be185d;
+
+  transform: translateY(-50%) !important;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.primary-button {
   width: 100%;
 
-  height: 50px;
+  height: 52px;
 
-  margin-top: 7px;
+  margin-top: 4px;
 
   border: none;
 
-  border-radius: 12px;
+  border-radius: 13px;
 
   background:
     linear-gradient(
@@ -389,68 +447,37 @@ body {
   cursor: pointer;
 
   box-shadow:
-    0 10px 25px
-    rgba(236, 72, 153, 0.22);
+    0 10px 25px rgba(236, 72, 153, 0.22);
 
   transition:
     transform 0.25s ease,
-    box-shadow 0.25s ease;
+    box-shadow 0.25s ease,
+    opacity 0.25s ease;
 }
 
-.auth-card button:hover,
-.login-card button:hover,
-.signup-card button:hover,
-.signin-card button:hover {
+.primary-button:hover {
   transform: translateY(-2px);
 
   box-shadow:
-    0 14px 32px
-    rgba(236, 72, 153, 0.32);
+    0 14px 32px rgba(236, 72, 153, 0.32);
 }
 
-.auth-card button:active,
-.login-card button:active,
-.signup-card button:active,
-.signin-card button:active {
+.primary-button:active {
   transform: translateY(0);
 }
 
-
-/* =========================================================
-   AUTH LINKS
-========================================================= */
-
-.auth-card a,
-.login-card a,
-.signup-card a,
-.signin-card a {
-  color: #db2777;
-
-  font-weight: 650;
-
-  text-decoration: none;
-
-  transition: 0.2s ease;
-}
-
-.auth-card a:hover,
-.login-card a:hover,
-.signup-card a:hover,
-.signin-card a:hover {
-  color: #be185d;
-
-  text-decoration: underline;
+.primary-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
 }
 
 
 /* =========================================================
-   AUTH FOOTER
+   SWITCH TEXT
 ========================================================= */
 
-.auth-footer,
-.login-footer,
-.signup-footer,
-.signin-footer {
+.switch-text {
   margin-top: 22px;
 
   text-align: center;
@@ -460,27 +487,66 @@ body {
   font-size: 13px;
 }
 
+.switch-text button {
+  width: auto !important;
+  height: auto !important;
+
+  margin: 0 0 0 5px !important;
+  padding: 0 !important;
+
+  border: none !important;
+
+  background: transparent !important;
+
+  color: #db2777;
+
+  font-size: inherit;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: none !important;
+}
+
+.switch-text button:hover {
+  color: #be185d;
+
+  text-decoration: underline;
+
+  transform: none !important;
+}
+
 
 /* =========================================================
-   AUTH ERROR
+   MESSAGES
 ========================================================= */
 
-.auth-error,
-.login-error,
-.signup-error,
-.signin-error {
+.error {
   padding: 10px 12px;
 
   border-radius: 10px;
 
   color: #be123c;
 
-  background:
-    #fff1f2;
+  background: #fff1f2;
 
-  border:
-    1px solid
-    #fecdd3;
+  border: 1px solid #fecdd3;
+
+  font-size: 13px;
+
+  text-align: center;
+}
+
+.success {
+  padding: 10px 12px;
+
+  border-radius: 10px;
+
+  color: #047857;
+
+  background: #ecfdf5;
+
+  border: 1px solid #a7f3d0;
 
   font-size: 13px;
 
@@ -525,24 +591,18 @@ body {
     );
 }
 
-
-/* Dashboard glow */
-
 .dashboard::before {
   content: "";
 
   position: absolute;
 
   width: 500px;
-
   height: 500px;
 
   top: -250px;
-
   right: -150px;
 
-  background:
-    rgba(236, 72, 153, 0.12);
+  background: rgba(236, 72, 153, 0.12);
 
   filter: blur(110px);
 
@@ -569,7 +629,7 @@ body {
 
   position: relative;
 
-  z-index: 2;
+  z-index: 3;
 }
 
 .brand {
@@ -595,7 +655,8 @@ body {
 .dashboard-header h1 {
   color: #581c3d;
 
-  font-size: clamp(28px, 4vw, 42px);
+  font-size:
+    clamp(28px, 4vw, 42px);
 
   line-height: 1.1;
 
@@ -624,14 +685,12 @@ body {
 
   gap: 8px;
 
-  background:
-    rgba(255, 255, 255, 0.60);
+  background: rgba(255, 255, 255, 0.60);
 
   color: #92546f;
 
   border:
-    1px solid
-    rgba(219, 39, 119, 0.12);
+    1px solid rgba(219, 39, 119, 0.12);
 
   padding: 10px 16px;
 
@@ -648,83 +707,135 @@ body {
   border-color:
     rgba(219, 39, 119, 0.28);
 
-  background:
-    rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.85);
 
   transform: translateY(-1px);
 }
 
 
 /* =========================================================
-   DASHBOARD HERO
+   DASHBOARD HERO / GOALS
 ========================================================= */
 
 .dashboard-hero {
   max-width: 1200px;
 
+  height: 280px;
+
   margin: 0 auto 28px;
-
-  min-height: 260px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  padding: 42px 48px;
 
   position: relative;
 
   overflow: hidden;
 
-  border-radius: 24px;
+  display: flex;
+
+  align-items: center;
+
+  border-radius: 26px;
+
+  /*
+    Base background stays underneath
+    the transparent PNG.
+  */
 
   background:
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.78),
-      rgba(252, 231, 243, 0.82)
+      #fff7fb,
+      #fce7f3
     );
 
   border:
-    1px solid
-    rgba(255, 255, 255, 0.90);
+    1px solid rgba(255, 255, 255, 0.95);
 
   box-shadow:
-    0 20px 55px
-    rgba(190, 24, 93, 0.10);
-
-  backdrop-filter: blur(18px);
+    0 20px 55px rgba(190, 24, 93, 0.10);
 }
+
+
+/* =========================================================
+   DASHBOARD HERO IMAGE
+   FULL BACKGROUND
+========================================================= */
+
+.dashboard-hero-image {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  /*
+    IMPORTANT:
+    Full image covers the complete Goals section.
+  */
+
+  object-fit: cover;
+
+  object-position: center;
+
+  /*
+    PNG must stay bright and clear.
+    Do NOT use:
+    opacity
+    mix-blend-mode
+    blur
+  */
+
+  opacity: 1;
+
+  filter: none;
+
+  mix-blend-mode: normal;
+
+  transform: scale(1.01);
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* =========================================================
+   HERO OVERLAY
+========================================================= */
 
 .dashboard-hero::after {
   content: "";
 
   position: absolute;
 
-  width: 300px;
+  inset: 0;
 
-  height: 300px;
-
-  right: 100px;
-
-  top: -150px;
-
-  background:
-    rgba(244, 114, 182, 0.20);
-
-  filter: blur(80px);
-
-  border-radius: 50%;
+  z-index: 1;
 
   pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 248, 252, 0.88) 0%,
+      rgba(255, 248, 252, 0.62) 38%,
+      rgba(255, 231, 243, 0.22) 72%,
+      rgba(255, 231, 243, 0.05) 100%
+    );
 }
+
+
+/* =========================================================
+   HERO TEXT
+========================================================= */
 
 .hero-text {
   position: relative;
 
   z-index: 2;
+
+  padding: 42px 48px;
+
+  max-width: 650px;
 }
 
 .hero-text span {
@@ -742,7 +853,8 @@ body {
 
   color: #581c3d;
 
-  font-size: clamp(30px, 4vw, 48px);
+  font-size:
+    clamp(30px, 4vw, 48px);
 
   line-height: 1.05;
 
@@ -755,24 +867,6 @@ body {
   margin-top: 14px;
 
   font-size: 15px;
-}
-
-.dashboard-hero-image {
-  width: 220px;
-
-  max-height: 220px;
-
-  object-fit: contain;
-
-  position: relative;
-
-  z-index: 2;
-
-  filter:
-    drop-shadow(
-      0 15px 30px
-      rgba(190, 24, 93, 0.15)
-    );
 }
 
 
@@ -789,16 +883,13 @@ body {
 
   border-radius: 18px;
 
-  background:
-    rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.72);
 
   border:
-    1px solid
-    rgba(255, 255, 255, 0.90);
+    1px solid rgba(255, 255, 255, 0.90);
 
   box-shadow:
-    0 15px 40px
-    rgba(190, 24, 93, 0.08);
+    0 15px 40px rgba(190, 24, 93, 0.08);
 
   backdrop-filter: blur(18px);
 }
@@ -815,12 +906,9 @@ body {
 
   border-radius: 10px;
 
-  border:
-    1px solid
-    #f3c0d5;
+  border: 1px solid #f3c0d5;
 
-  background:
-    rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.72);
 
   color: #581c3d;
 
@@ -848,8 +936,7 @@ body {
   background: white;
 
   box-shadow:
-    0 0 0 3px
-    rgba(236, 72, 153, 0.10);
+    0 0 0 3px rgba(236, 72, 153, 0.10);
 }
 
 .task-input-card select {
@@ -861,11 +948,6 @@ body {
 
   color: #581c3d;
 }
-
-
-/* =========================================================
-   ADD TASK BUTTON
-========================================================= */
 
 .task-input-card form button {
   height: 48px;
@@ -892,21 +974,19 @@ body {
   transition: 0.25s ease;
 
   box-shadow:
-    0 8px 25px
-    rgba(236, 72, 153, 0.20);
+    0 8px 25px rgba(236, 72, 153, 0.20);
 }
 
 .task-input-card form button:hover {
   transform: translateY(-2px);
 
   box-shadow:
-    0 12px 30px
-    rgba(236, 72, 153, 0.30);
+    0 12px 30px rgba(236, 72, 153, 0.30);
 }
 
 
 /* =========================================================
-   TASK TOOLBAR
+   TOOLBAR
 ========================================================= */
 
 .task-toolbar {
@@ -930,12 +1010,10 @@ body {
 
   border-radius: 10px;
 
-  background:
-    rgba(255, 255, 255, 0.58);
+  background: rgba(255, 255, 255, 0.58);
 
   border:
-    1px solid
-    rgba(219, 39, 119, 0.10);
+    1px solid rgba(219, 39, 119, 0.10);
 }
 
 .filters button {
@@ -1016,14 +1094,12 @@ body {
     rgba(255, 255, 255, 0.76);
 
   border:
-    1px solid
-    rgba(255, 255, 255, 0.90);
+    1px solid rgba(255, 255, 255, 0.90);
 
   transition: 0.25s ease;
 
   box-shadow:
-    0 8px 25px
-    rgba(190, 24, 93, 0.06);
+    0 8px 25px rgba(190, 24, 93, 0.06);
 }
 
 .task-item:hover {
@@ -1036,27 +1112,23 @@ body {
     rgba(255, 255, 255, 0.92);
 
   box-shadow:
-    0 12px 30px
-    rgba(190, 24, 93, 0.10);
+    0 12px 30px rgba(190, 24, 93, 0.10);
 }
 
 
 /* =========================================================
-   CHECK BUTTON
+   CHECK
 ========================================================= */
 
 .check-circle {
   width: 25px;
-
   height: 25px;
 
   flex-shrink: 0;
 
   border-radius: 50%;
 
-  border:
-    1.5px solid
-    #d18aa8;
+  border: 1.5px solid #d18aa8;
 
   background: transparent;
 
@@ -1065,7 +1137,6 @@ body {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   cursor: pointer;
@@ -1077,8 +1148,7 @@ body {
   border-color: #ec4899;
 
   box-shadow:
-    0 0 0 4px
-    rgba(236, 72, 153, 0.08);
+    0 0 0 4px rgba(236, 72, 153, 0.08);
 }
 
 .check-circle.checked {
@@ -1112,7 +1182,7 @@ body {
 
 
 /* =========================================================
-   CATEGORIES
+   CATEGORY
 ========================================================= */
 
 .category {
@@ -1160,13 +1230,11 @@ body {
 
 .delete-button {
   width: 34px;
-
   height: 34px;
 
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   border-radius: 8px;
@@ -1220,12 +1288,10 @@ body {
     rgba(255, 255, 255, 0.68);
 
   border:
-    1px solid
-    rgba(255, 255, 255, 0.90);
+    1px solid rgba(255, 255, 255, 0.90);
 
   box-shadow:
-    0 15px 40px
-    rgba(190, 24, 93, 0.06);
+    0 15px 40px rgba(190, 24, 93, 0.06);
 }
 
 .empty img {
@@ -1237,7 +1303,14 @@ body {
 
   margin-bottom: 16px;
 
-  opacity: 0.90;
+  opacity: 1;
+
+  filter:
+    drop-shadow(
+      0 10px 20px rgba(190, 24, 93, 0.12)
+    );
+
+  mix-blend-mode: normal;
 }
 
 .empty h3 {
@@ -1261,14 +1334,12 @@ body {
 
 .loader {
   width: 28px;
-
   height: 28px;
 
   border-radius: 50%;
 
   border:
-    3px solid
-    rgba(236, 72, 153, 0.12);
+    3px solid rgba(236, 72, 153, 0.12);
 
   border-top-color: #ec4899;
 
@@ -1286,78 +1357,173 @@ body {
 
 
 /* =========================================================
-   BOTTOM DECORATION
+   FOOTER / BOTTOM DECORATION
 ========================================================= */
 
 .bottom-decoration {
   max-width: 1200px;
 
-  min-height: 180px;
+  height: 230px;
 
-  margin: 35px auto 0;
+  margin: 40px auto 0;
 
   position: relative;
 
   display: flex;
 
-  justify-content: center;
-
   align-items: center;
 
+  justify-content: center;
+
   overflow: hidden;
+
+  border-radius: 26px 26px 0 0;
+
+  /*
+    The image belongs to the WHOLE footer,
+    not a small square.
+  */
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffeaf3,
+      #fff5f9
+    );
 }
 
-.bottom-plants,
-.bottom-flowers {
+
+/* =========================================================
+   FOOTER IMAGE
+   FULL BACKGROUND
+========================================================= */
+
+.bottom-plants {
   position: absolute;
 
-  bottom: 0;
+  inset: 0;
 
-  max-height: 150px;
+  width: 100%;
+  height: 100%;
 
-  object-fit: contain;
+  max-height: none;
 
-  opacity: 0.70;
+  object-fit: cover;
+
+  object-position: center bottom;
+
+  /*
+    Keep PNG completely bright and clear.
+  */
+
+  opacity: 1;
+
+  filter: none;
+
+  mix-blend-mode: normal;
+
+  transform: scale(1.01);
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+
+/* =========================================================
+   FOOTER SOFT OVERLAY
+========================================================= */
+
+.bottom-decoration::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255, 232, 241, 0.18),
+      rgba(255, 245, 249, 0.10),
+      rgba(255, 232, 241, 0.18)
+    );
 
   pointer-events: none;
 }
 
-.bottom-plants {
-  left: 0;
-}
 
-.bottom-flowers {
-  right: 0;
-}
+/* =========================================================
+   PROMINENT QUOTE
+========================================================= */
 
 .quote {
   display: flex;
 
   align-items: center;
 
-  gap: 18px;
+  justify-content: center;
 
-  color: #92546f;
-
-  text-align: center;
-
-  font-size: 14px;
+  gap: 24px;
 
   position: relative;
 
   z-index: 2;
+
+  padding: 22px 34px;
+
+  border-radius: 22px;
+
+  background:
+    rgba(255, 255, 255, 0.62);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.82);
+
+  box-shadow:
+    0 15px 40px rgba(190, 24, 93, 0.10);
+
+  backdrop-filter: blur(10px);
+
+  -webkit-backdrop-filter: blur(10px);
+
+  color: #7c294f;
+
+  text-align: center;
+
+  font-size: 18px;
+
+  letter-spacing: 0.2px;
 }
 
 .quote span {
   color: #db2777;
 
-  font-size: 16px;
+  font-size: 23px;
+
+  animation:
+    sparkle 2s ease-in-out infinite;
 }
 
 .quote strong {
-  font-weight: 500;
+  font-weight: 700;
 
-  line-height: 1.6;
+  line-height: 1.65;
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.75;
+  }
+
+  50% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
 }
 
 
@@ -1380,13 +1546,15 @@ body {
   }
 
   .dashboard-hero {
-    padding: 32px;
-
-    min-height: 220px;
+    height: 260px;
   }
 
-  .dashboard-hero-image {
-    width: 170px;
+  .hero-text {
+    padding: 32px;
+  }
+
+  .hero-text h2 {
+    font-size: 38px;
   }
 
   .task-input-card form {
@@ -1395,7 +1563,6 @@ body {
 
   .task-input-card input {
     width: 100%;
-
     flex-basis: 100%;
   }
 
@@ -1405,6 +1572,10 @@ body {
 
   .task-input-card form button {
     flex: 0 0 auto;
+  }
+
+  .bottom-decoration {
+    height: 210px;
   }
 }
 
@@ -1417,37 +1588,32 @@ body {
 
   /* AUTH */
 
-  .auth-container,
-  .login-container,
-  .signup-container,
-  .signin-container {
-    min-height: 100vh;
-
-    padding: 20px 15px;
+  .auth-page {
+    padding: 25px 14px;
   }
 
-  .auth-card,
-  .login-card,
-  .signup-card,
-  .signin-card {
-    width: 100% !important;
+  .auth-card {
+    max-width: 420px;
 
-    max-width: 400px !important;
+    padding:
+      24px 20px 28px;
 
-    padding: 28px 22px;
-
-    border-radius: 22px;
+    border-radius: 24px;
   }
 
-  .auth-card h1,
-  .auth-card h2,
-  .login-card h1,
-  .login-card h2,
-  .signup-card h1,
-  .signup-card h2,
-  .signin-card h1,
-  .signin-card h2 {
+  .auth-image img {
+    width: 230px;
+    height: 175px;
+  }
+
+  .auth-content h1 {
     font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+
+    margin-bottom: 21px;
   }
 
 
@@ -1461,35 +1627,88 @@ body {
     align-items: flex-start;
   }
 
+  .dashboard-header h1 {
+    font-size: 28px;
+  }
+
+  .dashboard-header p {
+    font-size: 14px;
+  }
+
   .logout-button {
     padding: 9px 11px;
 
     font-size: 0;
   }
 
-  .dashboard-hero {
-    padding: 26px;
+  .logout-button span {
+    font-size: 16px;
+  }
 
-    min-height: 300px;
+
+  /* HERO */
+
+  .dashboard-hero {
+    height: 330px;
 
     align-items: flex-start;
+
+    border-radius: 22px;
   }
 
   .dashboard-hero-image {
-    position: absolute;
+    /*
+      Still full background on mobile.
+    */
 
-    right: 15px;
+    width: 100%;
+    height: 100%;
 
-    bottom: 5px;
+    object-fit: cover;
 
-    width: 145px;
+    opacity: 1;
 
-    opacity: 0.72;
+    filter: none;
+
+    mix-blend-mode: normal;
+  }
+
+  .dashboard-hero::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 248, 252, 0.82),
+        rgba(255, 231, 243, 0.28)
+      );
+  }
+
+  .hero-text {
+    padding: 28px 25px;
+
+    max-width: 100%;
   }
 
   .hero-text h2 {
     font-size: 34px;
   }
+
+
+  /* TASK INPUT */
+
+  .task-input-card {
+    padding: 14px;
+  }
+
+  .task-input-card form {
+    gap: 9px;
+  }
+
+  .task-input-card select {
+    min-width: 0;
+  }
+
+
+  /* TOOLBAR */
 
   .task-toolbar {
     align-items: flex-end;
@@ -1509,6 +1728,9 @@ body {
     white-space: nowrap;
   }
 
+
+  /* TASKS */
+
   .task-item {
     gap: 10px;
 
@@ -1519,10 +1741,41 @@ body {
     display: none;
   }
 
-  .bottom-plants,
-  .bottom-flowers {
-    opacity: 0.35;
 
-    max-width: 110px;
+  /* FOOTER */
+
+  .bottom-decoration {
+    height: 220px;
+
+    margin-top: 32px;
+
+    border-radius: 22px 22px 0 0;
+  }
+
+  .bottom-plants {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    opacity: 1;
+
+    filter: none;
+
+    mix-blend-mode: normal;
+  }
+
+  .quote {
+    width: calc(100% - 24px);
+
+    padding: 18px 16px;
+
+    gap: 12px;
+
+    font-size: 16px;
+  }
+
+  .quote span {
+    font-size: 19px;
   }
 }

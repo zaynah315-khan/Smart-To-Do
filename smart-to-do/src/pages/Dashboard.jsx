@@ -1,7 +1,5 @@
  import { useEffect, useState } from "react";
-
 import { supabase } from "../lib/supabase";
-
 import TaskItem from "../components/TaskItem";
 
 function Dashboard() {
@@ -24,7 +22,7 @@ function Dashboard() {
     setUser(user);
 
     if (user) {
-      fetchTasks(user.id);
+      await fetchTasks(user.id);
     } else {
       setLoading(false);
     }
@@ -70,22 +68,30 @@ function Dashboard() {
       return;
     }
 
-    setTasks((previous) => [data, ...previous]);
+    setTasks((previous) => [
+      data,
+      ...previous,
+    ]);
 
     setNewTask("");
     setCategory("Personal");
   }
 
   async function toggleTask(task) {
+    const updatedStatus = !task.completed;
+
     const { error } = await supabase
       .from("tasks")
       .update({
-        completed: !task.completed,
+        completed: updatedStatus,
       })
       .eq("id", task.id);
 
     if (error) {
-      console.error("Update task error:", error);
+      console.error(
+        "Update task error:",
+        error
+      );
       return;
     }
 
@@ -94,7 +100,7 @@ function Dashboard() {
         item.id === task.id
           ? {
               ...item,
-              completed: !item.completed,
+              completed: updatedStatus,
             }
           : item
       )
@@ -108,51 +114,65 @@ function Dashboard() {
       .eq("id", id);
 
     if (error) {
-      console.error("Delete task error:", error);
+      console.error(
+        "Delete task error:",
+        error
+      );
       return;
     }
 
     setTasks((previous) =>
-      previous.filter((task) => task.id !== id)
+      previous.filter(
+        (task) => task.id !== id
+      )
     );
   }
 
   async function logout() {
-    const { error } = await supabase.auth.signOut();
+    const { error } =
+      await supabase.auth.signOut();
 
     if (error) {
-      console.error("Logout error:", error);
+      console.error(
+        "Logout error:",
+        error
+      );
     }
   }
 
-  const filteredTasks = tasks.filter((task) => {
-    if (filter === "Pending") {
-      return !task.completed;
-    }
+  const filteredTasks = tasks.filter(
+    (task) => {
+      if (filter === "Pending") {
+        return !task.completed;
+      }
 
-    if (filter === "Completed") {
-      return task.completed;
-    }
+      if (filter === "Completed") {
+        return task.completed;
+      }
 
-    return true;
-  });
+      return true;
+    }
+  );
 
   const completedCount = tasks.filter(
     (task) => task.completed
   ).length;
 
   const firstName =
-    user?.user_metadata?.full_name?.split(" ")[0] ||
-    "there";
+    user?.user_metadata?.full_name?.split(
+      " "
+    )[0] || "there";
 
   return (
     <main className="dashboard">
 
-      {/* HEADER */}
+      {/* =========================
+          HEADER
+      ========================= */}
+
       <header className="dashboard-header">
 
         <div>
-
           <div className="brand">
             <span>✦</span>
             Goal Grid
@@ -165,7 +185,6 @@ function Dashboard() {
           <p>
             Let's make today amazing!
           </p>
-
         </div>
 
         <button
@@ -180,8 +199,20 @@ function Dashboard() {
       </header>
 
 
-      {/* HERO */}
+      {/* =========================
+          HERO
+      ========================= */}
+
       <section className="dashboard-hero">
+
+        <img
+          className="dashboard-hero-image"
+          src="/assets/dashboard-hero.jpeg"
+          alt=""
+          aria-hidden="true"
+        />
+
+        <div className="hero-overlay"></div>
 
         <div className="hero-text">
 
@@ -201,16 +232,13 @@ function Dashboard() {
 
         </div>
 
-        <img
-          className="dashboard-hero-image"
-          src="/assets/dashboard-hero.jpeg"
-          alt="Productivity illustration"
-        />
-
       </section>
 
 
-      {/* ADD TASK */}
+      {/* =========================
+          ADD TASK
+      ========================= */}
+
       <section className="task-input-card">
 
         <form onSubmit={addTask}>
@@ -257,7 +285,10 @@ function Dashboard() {
       </section>
 
 
-      {/* FILTER TOOLBAR */}
+      {/* =========================
+          FILTERS
+      ========================= */}
+
       <div className="task-toolbar">
 
         <div className="filters">
@@ -267,7 +298,6 @@ function Dashboard() {
             "Pending",
             "Completed",
           ].map((item) => (
-
             <button
               key={item}
               type="button"
@@ -282,7 +312,6 @@ function Dashboard() {
             >
               {item}
             </button>
-
           ))}
 
         </div>
@@ -294,7 +323,10 @@ function Dashboard() {
       </div>
 
 
-      {/* TASK LIST */}
+      {/* =========================
+          TASK LIST
+      ========================= */}
+
       <section className="task-list">
 
         {loading ? (
@@ -332,14 +364,12 @@ function Dashboard() {
         ) : (
 
           filteredTasks.map((task) => (
-
             <TaskItem
               key={task.id}
               task={task}
               toggleTask={toggleTask}
               deleteTask={deleteTask}
             />
-
           ))
 
         )}
@@ -347,14 +377,20 @@ function Dashboard() {
       </section>
 
 
-      {/* BOTTOM DECORATION */}
+      {/* =========================
+          BOTTOM FOOTER
+      ========================= */}
+
       <section className="bottom-decoration">
 
         <img
           className="bottom-plants"
           src="/assets/dashboard-plants.jpeg"
           alt=""
+          aria-hidden="true"
         />
+
+        <div className="bottom-overlay"></div>
 
         <div className="quote">
 

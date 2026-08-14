@@ -6,6 +6,7 @@
   return (
     <div className="task-item">
 
+      {/* CHECK TASK */}
       <button
         type="button"
         className={
@@ -23,6 +24,7 @@
         {task.completed && "✓"}
       </button>
 
+      {/* TASK TITLE */}
       <span
         className={
           task.completed
@@ -33,6 +35,7 @@
         {task.title}
       </span>
 
+      {/* CATEGORY */}
       <span
         className={`category ${
           task.category
@@ -43,6 +46,7 @@
         {task.category || "Personal"}
       </span>
 
+      {/* DELETE */}
       <button
         type="button"
         className="delete-button"

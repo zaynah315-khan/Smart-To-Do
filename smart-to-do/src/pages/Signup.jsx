@@ -2,16 +2,30 @@
 import { supabase } from "../lib/supabase";
 
 function Signup({ goToLogin }) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] =
+    useState("");
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] =
+    useState("");
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [password, setPassword] =
+    useState("");
+
+  const [confirmPassword, setConfirmPassword] =
+    useState("");
+
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  const [message, setMessage] =
+    useState("");
+
 
   async function handleSignup(e) {
     e.preventDefault();
@@ -20,27 +34,32 @@ function Signup({ goToLogin }) {
     setMessage("");
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+      setError(
+        "Passwords do not match."
+      );
       return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+      setError(
+        "Password must be at least 6 characters."
+      );
       return;
     }
 
     setLoading(true);
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
+    const { error } =
+      await supabase.auth.signUp({
+        email,
+        password,
 
-      options: {
-        data: {
-          full_name: name,
+        options: {
+          data: {
+            full_name: name,
+          },
         },
-      },
-    });
+      });
 
     if (error) {
       setError(error.message);
@@ -58,134 +77,209 @@ function Signup({ goToLogin }) {
     setLoading(false);
   }
 
+
   return (
     <main className="auth-page">
+
       <div className="auth-card">
 
-        {/* SIGNUP IMAGE */}
+        {/* IMAGE */}
+
         <div className="auth-image signup-image">
+
           <img
-            src="/assets/signup-illustration.jpeg"
+            src="/assets/signup-illustration.png"
             alt="Signup illustration"
           />
+
         </div>
 
-        {/* SIGNUP CONTENT */}
+
+        {/* CONTENT */}
+
         <div className="auth-content">
 
-          <h1>Create Account! ✨</h1>
+          <h1>
+            Create Account! ✨
+          </h1>
 
           <p className="subtitle">
             Start organizing your tasks today
           </p>
 
+
           <form onSubmit={handleSignup}>
 
-            {/* FULL NAME */}
-            <label htmlFor="name">
-              Full name
-            </label>
+            {/* NAME */}
 
-            <div className="input-wrapper">
-              <span className="input-icon">👤</span>
+            <div className="form-group">
 
-              <input
-                id="name"
-                type="text"
-                placeholder="Enter your full name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+              <label htmlFor="name">
+                Full name
+              </label>
+
+              <div className="input-wrapper">
+
+                <span className="input-icon">
+                  👤
+                </span>
+
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={name}
+                  onChange={(e) =>
+                    setName(e.target.value)
+                  }
+                  required
+                />
+
+              </div>
+
             </div>
+
 
             {/* EMAIL */}
-            <label htmlFor="email">
-              Email address
-            </label>
 
-            <div className="input-wrapper">
-              <span className="input-icon">✉</span>
+            <div className="form-group">
 
-              <input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <label htmlFor="email">
+                Email address
+              </label>
+
+              <div className="input-wrapper">
+
+                <span className="input-icon">
+                  ✉
+                </span>
+
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) =>
+                    setEmail(e.target.value)
+                  }
+                  required
+                />
+
+              </div>
+
             </div>
+
 
             {/* PASSWORD */}
-            <label htmlFor="password">
-              Password
-            </label>
 
-            <div className="input-wrapper">
-              <span className="input-icon">🔒</span>
+            <div className="form-group">
 
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Create a password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <label htmlFor="password">
+                Password
+              </label>
 
-              <button
-                type="button"
-                className="icon-button"
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={
-                  showPassword
-                    ? "Hide password"
-                    : "Show password"
-                }
-              >
-                {showPassword ? "🙈" : "👁"}
-              </button>
+              <div className="input-wrapper">
+
+                <span className="input-icon">
+                  🔒
+                </span>
+
+                <input
+                  id="password"
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
+                  }
+                  placeholder="Create a password"
+                  value={password}
+                  onChange={(e) =>
+                    setPassword(
+                      e.target.value
+                    )
+                  }
+                  required
+                />
+
+                <button
+                  type="button"
+                  className="icon-button"
+                  onClick={() =>
+                    setShowPassword(
+                      !showPassword
+                    )
+                  }
+                  aria-label={
+                    showPassword
+                      ? "Hide password"
+                      : "Show password"
+                  }
+                >
+                  {showPassword
+                    ? "🙈"
+                    : "👁"}
+                </button>
+
+              </div>
+
             </div>
+
 
             {/* CONFIRM PASSWORD */}
-            <label htmlFor="confirmPassword">
-              Confirm password
-            </label>
 
-            <div className="input-wrapper">
-              <span className="input-icon">🔒</span>
+            <div className="form-group">
 
-              <input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirm your password"
-                value={confirmPassword}
-                onChange={(e) =>
-                  setConfirmPassword(e.target.value)
-                }
-                required
-              />
+              <label htmlFor="confirmPassword">
+                Confirm password
+              </label>
+
+              <div className="input-wrapper">
+
+                <span className="input-icon">
+                  🔒
+                </span>
+
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="Confirm your password"
+                  value={confirmPassword}
+                  onChange={(e) =>
+                    setConfirmPassword(
+                      e.target.value
+                    )
+                  }
+                  required
+                />
+
+              </div>
+
             </div>
 
+
             {/* ERROR */}
+
             {error && (
               <p className="error">
                 {error}
               </p>
             )}
 
+
             {/* SUCCESS */}
+
             {message && (
               <p className="success">
                 {message}
               </p>
             )}
 
-            {/* SIGN UP BUTTON */}
+
+            {/* SIGN UP */}
+
             <button
               type="submit"
-              className="primary-button pink-button"
+              className="primary-button"
               disabled={loading}
             >
               {loading
@@ -195,7 +289,9 @@ function Signup({ goToLogin }) {
 
           </form>
 
+
           {/* LOGIN */}
+
           <p className="switch-text">
             Already have an account?
 
@@ -208,7 +304,9 @@ function Signup({ goToLogin }) {
           </p>
 
         </div>
+
       </div>
+
     </main>
   );
 }
