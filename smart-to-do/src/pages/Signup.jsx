@@ -17,16 +17,22 @@ function Signup({ goToLogin }) {
   async function handleSignup(e) {
     e.preventDefault();
 
+    // Prevent duplicate requests
+    if (loading) return;
+
     setError("");
     setMessage("");
 
-    if (!name.trim()) {
+    const cleanName = name.trim();
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanName) {
       setError("Please enter your full name.");
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+    if (!cleanEmail) {
+      setError("Please enter your email address.");
       return;
     }
 
@@ -35,44 +41,84 @@ function Signup({ goToLogin }) {
       return;
     }
 
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     setLoading(true);
 
-    const redirectUrl = window.location.origin;
+    try {
+      const redirectUrl = window.location.origin;
 
-    const { error } = await supabase.auth.signUp({
-      email: email.trim(),
-      password,
+      const { data, error } =
+        await supabase.auth.signUp({
+          email: cleanEmail,
+          password: password,
 
-      options: {
-        emailRedirectTo: redirectUrl,
+          options: {
+            emailRedirectTo: redirectUrl,
 
-        data: {
-          full_name: name.trim(),
-        },
-      },
-    });
+            data: {
+              full_name: cleanName,
+            },
+          },
+        });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      setMessage(
-        "Account created! Please check your email and verify your account. After verification, you will be redirected to Goal Grid."
-      );
+      if (error) {
+        console.error("Signup error:", error);
+
+        if (
+          error.message
+            ?.toLowerCase()
+            .includes("rate limit")
+        ) {
+          setError(
+            "Email sending limit has been reached. Please wait and try again later."
+          );
+        } else {
+          setError(error.message);
+        }
+
+        return;
+      }
+
+      /*
+       * If Supabase requires email confirmation,
+       * session will normally be null here.
+       */
+      if (data?.user && !data?.session) {
+        setMessage(
+          "Account created successfully! Please check your email and verify your account. After verification, Goal Grid will open automatically."
+        );
+      } else if (data?.session) {
+        /*
+         * Email confirmation is disabled.
+         * App.jsx will automatically show Dashboard.
+         */
+        setMessage("Account created successfully!");
+      }
 
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-    }
+    } catch (err) {
+      console.error("Unexpected signup error:", err);
 
-    setLoading(false);
+      setError(
+        "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <main className="auth-page">
       <div className="auth-card">
 
-        {/* SIGNUP IMAGE */}
+        {/* IMAGE */}
         <div className="auth-image signup-image">
           <img
             src="/assets/signup-illustration.png"
@@ -80,7 +126,7 @@ function Signup({ goToLogin }) {
           />
         </div>
 
-        {/* SIGNUP CONTENT */}
+        {/* CONTENT */}
         <div className="auth-content">
 
           <h1>Create Account! ✨</h1>
@@ -91,7 +137,7 @@ function Signup({ goToLogin }) {
 
           <form onSubmit={handleSignup}>
 
-            {/* FULL NAME */}
+            {/* NAME */}
             <div className="form-group">
               <label htmlFor="name">
                 Full name
@@ -170,13 +216,8 @@ function Signup({ goToLogin }) {
                   className="icon-button"
                   onClick={() =>
                     setShowPassword(
-                      !showPassword
+                      (previous) => !previous
                     )
-                  }
-                  aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
                   }
                 >
                   {showPassword ? "🙈" : "👁"}
@@ -217,13 +258,8 @@ function Signup({ goToLogin }) {
                   className="icon-button"
                   onClick={() =>
                     setShowConfirmPassword(
-                      !showConfirmPassword
+                      (previous) => !previous
                     )
-                  }
-                  aria-label={
-                    showConfirmPassword
-                      ? "Hide password"
-                      : "Show password"
                   }
                 >
                   {showConfirmPassword
@@ -247,7 +283,7 @@ function Signup({ goToLogin }) {
               </p>
             )}
 
-            {/* SIGN UP BUTTON */}
+            {/* BUTTON */}
             <button
               type="submit"
               className="primary-button pink-button"
@@ -260,7 +296,6 @@ function Signup({ goToLogin }) {
 
           </form>
 
-          {/* LOGIN */}
           <p className="switch-text">
             Already have an account?
 

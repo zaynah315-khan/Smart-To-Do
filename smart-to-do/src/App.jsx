@@ -8,42 +8,41 @@ import Dashboard from "./pages/Dashboard";
 function App() {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const [page, setPage] = useState("login");
 
   useEffect(() => {
     let mounted = true;
 
-    async function getInitialSession() {
+    async function loadSession() {
       const {
-        data: { session },
+        data,
         error,
       } = await supabase.auth.getSession();
 
       if (error) {
         console.error(
-          "Session error:",
+          "Get session error:",
           error
         );
       }
 
       if (mounted) {
-        setSession(session);
+        setSession(data?.session ?? null);
         setLoading(false);
       }
     }
 
-    getInitialSession();
+    loadSession();
 
     const {
-      data: { subscription },
+      data: authData,
     } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (_event, newSession) => {
         if (!mounted) return;
 
-        setSession(session);
+        setSession(newSession);
 
-        if (session) {
+        if (newSession) {
           setPage("dashboard");
         }
       }
@@ -51,7 +50,8 @@ function App() {
 
     return () => {
       mounted = false;
-      subscription.unsubscribe();
+
+      authData.subscription.unsubscribe();
     };
   }, []);
 
@@ -59,6 +59,7 @@ function App() {
     return (
       <main className="auth-page">
         <div className="auth-card">
+
           <div className="empty">
             <div className="loader"></div>
 
@@ -66,17 +67,22 @@ function App() {
               Checking your account...
             </p>
           </div>
+
         </div>
       </main>
     );
   }
 
-  /* USER IS LOGGED IN */
+  /*
+   * VERIFIED / LOGGED-IN USER
+   */
   if (session) {
     return <Dashboard />;
   }
 
-  /* SIGNUP PAGE */
+  /*
+   * SIGNUP
+   */
   if (page === "signup") {
     return (
       <Signup
@@ -87,7 +93,9 @@ function App() {
     );
   }
 
-  /* LOGIN PAGE */
+  /*
+   * LOGIN
+   */
   return (
     <Login
       goToSignup={() =>

@@ -5,35 +5,71 @@ function Login({ goToSignup }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] =
+    useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
 
   async function handleLogin(e) {
     e.preventDefault();
 
+    if (loading) return;
+
     setError("");
     setLoading(true);
 
-    const { error } =
-      await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      });
+    try {
+      const {
+        data,
+        error,
+      } =
+        await supabase.auth.signInWithPassword({
+          email: email.trim().toLowerCase(),
+          password,
+        });
 
-    if (error) {
-      setError(error.message);
+      if (error) {
+        console.error(
+          "Login error:",
+          error
+        );
+
+        setError(error.message);
+        return;
+      }
+
+      console.log(
+        "Login successful:",
+        data.user
+      );
+
+      /*
+       * App.jsx listens to the auth state
+       * and automatically opens Dashboard.
+       */
+    } catch (err) {
+      console.error(
+        "Unexpected login error:",
+        err
+      );
+
+      setError(
+        "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return (
     <main className="auth-page">
       <div className="auth-card">
 
-        {/* LOGIN IMAGE */}
+        {/* IMAGE */}
         <div className="auth-image login-image">
           <img
             src="/assets/login-illustration.png"
@@ -41,7 +77,7 @@ function Login({ goToSignup }) {
           />
         </div>
 
-        {/* LOGIN CONTENT */}
+        {/* CONTENT */}
         <div className="auth-content">
 
           <h1>
@@ -109,16 +145,14 @@ function Login({ goToSignup }) {
                   className="icon-button"
                   onClick={() =>
                     setShowPassword(
-                      !showPassword
+                      (previous) =>
+                        !previous
                     )
                   }
-                  aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
-                  }
                 >
-                  {showPassword ? "🙈" : "👁"}
+                  {showPassword
+                    ? "🙈"
+                    : "👁"}
                 </button>
               </div>
             </div>
@@ -143,7 +177,6 @@ function Login({ goToSignup }) {
 
           </form>
 
-          {/* SIGNUP */}
           <p className="switch-text">
             Don't have an account?
 
