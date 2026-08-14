@@ -1,0 +1,1528 @@
+ /* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-main: #fff4f8;
+  --bg-secondary: #ffe8f1;
+
+  --card: rgba(255, 255, 255, 0.78);
+  --card-dark: rgba(255, 255, 255, 0.65);
+
+  --border: rgba(219, 39, 119, 0.12);
+  --border-hover: rgba(219, 39, 119, 0.30);
+
+  --text-primary: #4a1730;
+  --text-secondary: #8f5570;
+  --text-muted: #b4869b;
+
+  --pink: #ec4899;
+  --pink-light: #f9a8d4;
+  --pink-soft: #fce7f3;
+  --pink-dark: #be185d;
+
+  --success: #10b981;
+  --danger: #e11d48;
+
+  --shadow:
+    0 20px 60px rgba(190, 24, 93, 0.12);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: var(--text-primary);
+
+  min-height: 100vh;
+}
+
+
+/* =========================================================
+   LOGIN / SIGN UP
+   BRIGHT PASTEL PINK
+========================================================= */
+
+.auth-container,
+.login-container,
+.signup-container,
+.signin-container {
+  width: 100%;
+
+  min-height: 100vh;
+
+  display: flex !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  padding: 30px 20px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(251, 207, 232, 0.95),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(249, 168, 212, 0.70),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(244, 114, 182, 0.35),
+      transparent 40%
+    ),
+    linear-gradient(
+      135deg,
+      #fff8fb 0%,
+      #ffeaf3 45%,
+      #ffdce9 100%
+    );
+}
+
+
+/* =========================================================
+   AUTH DECORATIVE GLOW
+========================================================= */
+
+.auth-container::before,
+.login-container::before,
+.signup-container::before,
+.signin-container::before {
+  content: "";
+
+  position: absolute;
+
+  width: 450px;
+
+  height: 450px;
+
+  top: -200px;
+
+  left: -150px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(244, 114, 182, 0.20);
+
+  filter: blur(90px);
+
+  pointer-events: none;
+}
+
+.auth-container::after,
+.login-container::after,
+.signup-container::after,
+.signin-container::after {
+  content: "";
+
+  position: absolute;
+
+  width: 400px;
+
+  height: 400px;
+
+  right: -150px;
+
+  bottom: -180px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(236, 72, 153, 0.18);
+
+  filter: blur(90px);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   AUTH CARD
+========================================================= */
+
+.auth-card,
+.login-card,
+.signup-card,
+.signin-card {
+  width: 100% !important;
+
+  max-width: 430px !important;
+
+  margin: auto !important;
+
+  position: relative;
+
+  z-index: 5;
+
+  padding: 38px;
+
+  border-radius: 26px;
+
+  background:
+    rgba(255, 255, 255, 0.88);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.95);
+
+  box-shadow:
+    0 30px 80px
+    rgba(190, 24, 93, 0.14),
+
+    0 8px 30px
+    rgba(244, 114, 182, 0.12);
+
+  backdrop-filter: blur(22px);
+
+  -webkit-backdrop-filter: blur(22px);
+}
+
+
+/* =========================================================
+   AUTH HEADING
+========================================================= */
+
+.auth-card h1,
+.auth-card h2,
+.login-card h1,
+.login-card h2,
+.signup-card h1,
+.signup-card h2,
+.signin-card h1,
+.signin-card h2 {
+  color: #831843;
+
+  text-align: center;
+
+  font-size: 30px;
+
+  font-weight: 750;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.8px;
+
+  margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   AUTH DESCRIPTION
+========================================================= */
+
+.auth-card p,
+.login-card p,
+.signup-card p,
+.signin-card p {
+  color: #9d5578;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   AUTH FORM
+========================================================= */
+
+.auth-card form,
+.login-card form,
+.signup-card form,
+.signin-card form {
+  width: 100%;
+
+  margin-top: 26px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+
+/* =========================================================
+   LABELS
+========================================================= */
+
+.auth-card label,
+.login-card label,
+.signup-card label,
+.signin-card label {
+  display: block;
+
+  color: #831843;
+
+  font-size: 13px;
+
+  font-weight: 650;
+
+  margin-bottom: 7px;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.auth-card input,
+.login-card input,
+.signup-card input,
+.signin-card input {
+  width: 100%;
+
+  height: 50px;
+
+  padding: 0 15px;
+
+  border-radius: 12px;
+
+  border:
+    1px solid
+    #f3b6d0;
+
+  outline: none;
+
+  background:
+    rgba(255, 255, 255, 0.78);
+
+  color: #5b1737;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.auth-card input::placeholder,
+.login-card input::placeholder,
+.signup-card input::placeholder,
+.signin-card input::placeholder {
+  color: #c18ba5;
+}
+
+.auth-card input:hover,
+.login-card input:hover,
+.signup-card input:hover,
+.signin-card input:hover {
+  border-color: #ec91b8;
+}
+
+.auth-card input:focus,
+.login-card input:focus,
+.signup-card input:focus,
+.signin-card input:focus {
+  border-color: #ec4899;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(236, 72, 153, 0.12);
+}
+
+
+/* =========================================================
+   AUTH BUTTON
+========================================================= */
+
+.auth-card button,
+.login-card button,
+.signup-card button,
+.signin-card button {
+  width: 100%;
+
+  height: 50px;
+
+  margin-top: 7px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f9a8d4 0%,
+      #ec4899 50%,
+      #db2777 100%
+    );
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 25px
+    rgba(236, 72, 153, 0.22);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.auth-card button:hover,
+.login-card button:hover,
+.signup-card button:hover,
+.signin-card button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 32px
+    rgba(236, 72, 153, 0.32);
+}
+
+.auth-card button:active,
+.login-card button:active,
+.signup-card button:active,
+.signin-card button:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   AUTH LINKS
+========================================================= */
+
+.auth-card a,
+.login-card a,
+.signup-card a,
+.signin-card a {
+  color: #db2777;
+
+  font-weight: 650;
+
+  text-decoration: none;
+
+  transition: 0.2s ease;
+}
+
+.auth-card a:hover,
+.login-card a:hover,
+.signup-card a:hover,
+.signin-card a:hover {
+  color: #be185d;
+
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   AUTH FOOTER
+========================================================= */
+
+.auth-footer,
+.login-footer,
+.signup-footer,
+.signin-footer {
+  margin-top: 22px;
+
+  text-align: center;
+
+  color: #a45b7c;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   AUTH ERROR
+========================================================= */
+
+.auth-error,
+.login-error,
+.signup-error,
+.signin-error {
+  padding: 10px 12px;
+
+  border-radius: 10px;
+
+  color: #be123c;
+
+  background:
+    #fff1f2;
+
+  border:
+    1px solid
+    #fecdd3;
+
+  font-size: 13px;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard {
+  min-height: 100vh;
+
+  padding: 40px 7% 0;
+
+  position: relative;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 5% 5%,
+      rgba(249, 168, 212, 0.35),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 95% 10%,
+      rgba(236, 72, 153, 0.20),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(244, 114, 182, 0.15),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #fff5f9 0%,
+      #ffe8f1 48%,
+      #ffdce9 100%
+    );
+}
+
+
+/* Dashboard glow */
+
+.dashboard::before {
+  content: "";
+
+  position: absolute;
+
+  width: 500px;
+
+  height: 500px;
+
+  top: -250px;
+
+  right: -150px;
+
+  background:
+    rgba(236, 72, 153, 0.12);
+
+  filter: blur(110px);
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   DASHBOARD HEADER
+========================================================= */
+
+.dashboard-header {
+  max-width: 1200px;
+
+  margin: 0 auto 32px;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+.brand {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: #db2777;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+
+  margin-bottom: 12px;
+}
+
+.dashboard-header h1 {
+  color: #581c3d;
+
+  font-size: clamp(28px, 4vw, 42px);
+
+  line-height: 1.1;
+
+  font-weight: 700;
+
+  letter-spacing: -1px;
+}
+
+.dashboard-header p {
+  color: #92546f;
+
+  margin-top: 9px;
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-button {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  background:
+    rgba(255, 255, 255, 0.60);
+
+  color: #92546f;
+
+  border:
+    1px solid
+    rgba(219, 39, 119, 0.12);
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.logout-button:hover {
+  color: #be185d;
+
+  border-color:
+    rgba(219, 39, 119, 0.28);
+
+  background:
+    rgba(255, 255, 255, 0.85);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DASHBOARD HERO
+========================================================= */
+
+.dashboard-hero {
+  max-width: 1200px;
+
+  margin: 0 auto 28px;
+
+  min-height: 260px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 42px 48px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.78),
+      rgba(252, 231, 243, 0.82)
+    );
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.90);
+
+  box-shadow:
+    0 20px 55px
+    rgba(190, 24, 93, 0.10);
+
+  backdrop-filter: blur(18px);
+}
+
+.dashboard-hero::after {
+  content: "";
+
+  position: absolute;
+
+  width: 300px;
+
+  height: 300px;
+
+  right: 100px;
+
+  top: -150px;
+
+  background:
+    rgba(244, 114, 182, 0.20);
+
+  filter: blur(80px);
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.hero-text {
+  position: relative;
+
+  z-index: 2;
+}
+
+.hero-text span {
+  color: #db2777;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 2px;
+}
+
+.hero-text h2 {
+  margin-top: 14px;
+
+  color: #581c3d;
+
+  font-size: clamp(30px, 4vw, 48px);
+
+  line-height: 1.05;
+
+  letter-spacing: -1.5px;
+}
+
+.hero-text p {
+  color: #92546f;
+
+  margin-top: 14px;
+
+  font-size: 15px;
+}
+
+.dashboard-hero-image {
+  width: 220px;
+
+  max-height: 220px;
+
+  object-fit: contain;
+
+  position: relative;
+
+  z-index: 2;
+
+  filter:
+    drop-shadow(
+      0 15px 30px
+      rgba(190, 24, 93, 0.15)
+    );
+}
+
+
+/* =========================================================
+   TASK INPUT
+========================================================= */
+
+.task-input-card {
+  max-width: 1200px;
+
+  margin: 0 auto 22px;
+
+  padding: 18px;
+
+  border-radius: 18px;
+
+  background:
+    rgba(255, 255, 255, 0.72);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.90);
+
+  box-shadow:
+    0 15px 40px
+    rgba(190, 24, 93, 0.08);
+
+  backdrop-filter: blur(18px);
+}
+
+.task-input-card form {
+  display: flex;
+
+  gap: 12px;
+}
+
+.task-input-card input,
+.task-input-card select {
+  height: 48px;
+
+  border-radius: 10px;
+
+  border:
+    1px solid
+    #f3c0d5;
+
+  background:
+    rgba(255, 255, 255, 0.72);
+
+  color: #581c3d;
+
+  outline: none;
+
+  padding: 0 15px;
+
+  font-size: 14px;
+
+  transition: 0.25s ease;
+}
+
+.task-input-card input {
+  flex: 1;
+}
+
+.task-input-card input::placeholder {
+  color: #b4869b;
+}
+
+.task-input-card input:focus,
+.task-input-card select:focus {
+  border-color: #ec4899;
+
+  background: white;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(236, 72, 153, 0.10);
+}
+
+.task-input-card select {
+  min-width: 140px;
+}
+
+.task-input-card select option {
+  background: white;
+
+  color: #581c3d;
+}
+
+
+/* =========================================================
+   ADD TASK BUTTON
+========================================================= */
+
+.task-input-card form button {
+  height: 48px;
+
+  padding: 0 22px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f9a8d4,
+      #ec4899
+    );
+
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+
+  box-shadow:
+    0 8px 25px
+    rgba(236, 72, 153, 0.20);
+}
+
+.task-input-card form button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 30px
+    rgba(236, 72, 153, 0.30);
+}
+
+
+/* =========================================================
+   TASK TOOLBAR
+========================================================= */
+
+.task-toolbar {
+  max-width: 1200px;
+
+  margin: 0 auto 14px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+}
+
+.filters {
+  display: flex;
+
+  gap: 6px;
+
+  padding: 4px;
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.58);
+
+  border:
+    1px solid
+    rgba(219, 39, 119, 0.10);
+}
+
+.filters button {
+  border: none;
+
+  background: transparent;
+
+  color: #a66b86;
+
+  padding: 8px 14px;
+
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  font-size: 13px;
+
+  transition: 0.2s ease;
+}
+
+.filters button:hover {
+  color: #831843;
+}
+
+.filters button.active {
+  color: #be185d;
+
+  background:
+    rgba(244, 114, 182, 0.18);
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(236, 72, 153, 0.15);
+}
+
+.task-count {
+  color: #a66b86;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   TASK LIST
+========================================================= */
+
+.task-list {
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+/* =========================================================
+   TASK ITEM
+========================================================= */
+
+.task-item {
+  min-height: 64px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 12px 16px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.76);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.90);
+
+  transition: 0.25s ease;
+
+  box-shadow:
+    0 8px 25px
+    rgba(190, 24, 93, 0.06);
+}
+
+.task-item:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(236, 72, 153, 0.25);
+
+  background:
+    rgba(255, 255, 255, 0.92);
+
+  box-shadow:
+    0 12px 30px
+    rgba(190, 24, 93, 0.10);
+}
+
+
+/* =========================================================
+   CHECK BUTTON
+========================================================= */
+
+.check-circle {
+  width: 25px;
+
+  height: 25px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  border:
+    1.5px solid
+    #d18aa8;
+
+  background: transparent;
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.check-circle:hover {
+  border-color: #ec4899;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(236, 72, 153, 0.08);
+}
+
+.check-circle.checked {
+  border-color: var(--success);
+
+  background: var(--success);
+
+  color: white;
+}
+
+
+/* =========================================================
+   TASK TITLE
+========================================================= */
+
+.task-title {
+  flex: 1;
+
+  color: #5b1737;
+
+  font-size: 14px;
+
+  transition: 0.25s ease;
+}
+
+.task-title.completed {
+  color: #b4869b;
+
+  text-decoration: line-through;
+}
+
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+.category {
+  padding: 5px 10px;
+
+  border-radius: 7px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.3px;
+
+  background:
+    rgba(236, 72, 153, 0.10);
+
+  color: #db2777;
+}
+
+.category.work {
+  color: #9333ea;
+
+  background:
+    rgba(168, 85, 247, 0.10);
+}
+
+.category.health {
+  color: #059669;
+
+  background:
+    rgba(16, 185, 129, 0.10);
+}
+
+.category.shopping {
+  color: #db2777;
+
+  background:
+    rgba(236, 72, 153, 0.12);
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+.delete-button {
+  width: 34px;
+
+  height: 34px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 8px;
+
+  border: 1px solid transparent;
+
+  background: transparent;
+
+  color: #b4869b;
+
+  cursor: pointer;
+
+  font-size: 16px;
+
+  transition: 0.25s ease;
+}
+
+.delete-button:hover {
+  color: var(--danger);
+
+  background:
+    rgba(225, 29, 72, 0.07);
+
+  border-color:
+    rgba(225, 29, 72, 0.12);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.empty {
+  min-height: 260px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 40px;
+
+  border-radius: 18px;
+
+  background:
+    rgba(255, 255, 255, 0.68);
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.90);
+
+  box-shadow:
+    0 15px 40px
+    rgba(190, 24, 93, 0.06);
+}
+
+.empty img {
+  width: 130px;
+
+  max-height: 120px;
+
+  object-fit: contain;
+
+  margin-bottom: 16px;
+
+  opacity: 0.90;
+}
+
+.empty h3 {
+  font-size: 18px;
+
+  margin-bottom: 7px;
+
+  color: #581c3d;
+}
+
+.empty p {
+  color: #92546f;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+.loader {
+  width: 28px;
+
+  height: 28px;
+
+  border-radius: 50%;
+
+  border:
+    3px solid
+    rgba(236, 72, 153, 0.12);
+
+  border-top-color: #ec4899;
+
+  animation:
+    spin 0.8s linear infinite;
+
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   BOTTOM DECORATION
+========================================================= */
+
+.bottom-decoration {
+  max-width: 1200px;
+
+  min-height: 180px;
+
+  margin: 35px auto 0;
+
+  position: relative;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  overflow: hidden;
+}
+
+.bottom-plants,
+.bottom-flowers {
+  position: absolute;
+
+  bottom: 0;
+
+  max-height: 150px;
+
+  object-fit: contain;
+
+  opacity: 0.70;
+
+  pointer-events: none;
+}
+
+.bottom-plants {
+  left: 0;
+}
+
+.bottom-flowers {
+  right: 0;
+}
+
+.quote {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  color: #92546f;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+.quote span {
+  color: #db2777;
+
+  font-size: 16px;
+}
+
+.quote strong {
+  font-weight: 500;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .dashboard {
+    padding: 28px 20px 0;
+  }
+
+  .dashboard-header {
+    gap: 20px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 30px;
+  }
+
+  .dashboard-hero {
+    padding: 32px;
+
+    min-height: 220px;
+  }
+
+  .dashboard-hero-image {
+    width: 170px;
+  }
+
+  .task-input-card form {
+    flex-wrap: wrap;
+  }
+
+  .task-input-card input {
+    width: 100%;
+
+    flex-basis: 100%;
+  }
+
+  .task-input-card select {
+    flex: 1;
+  }
+
+  .task-input-card form button {
+    flex: 0 0 auto;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 560px) {
+
+  /* AUTH */
+
+  .auth-container,
+  .login-container,
+  .signup-container,
+  .signin-container {
+    min-height: 100vh;
+
+    padding: 20px 15px;
+  }
+
+  .auth-card,
+  .login-card,
+  .signup-card,
+  .signin-card {
+    width: 100% !important;
+
+    max-width: 400px !important;
+
+    padding: 28px 22px;
+
+    border-radius: 22px;
+  }
+
+  .auth-card h1,
+  .auth-card h2,
+  .login-card h1,
+  .login-card h2,
+  .signup-card h1,
+  .signup-card h2,
+  .signin-card h1,
+  .signin-card h2 {
+    font-size: 26px;
+  }
+
+
+  /* DASHBOARD */
+
+  .dashboard {
+    padding: 22px 14px 0;
+  }
+
+  .dashboard-header {
+    align-items: flex-start;
+  }
+
+  .logout-button {
+    padding: 9px 11px;
+
+    font-size: 0;
+  }
+
+  .dashboard-hero {
+    padding: 26px;
+
+    min-height: 300px;
+
+    align-items: flex-start;
+  }
+
+  .dashboard-hero-image {
+    position: absolute;
+
+    right: 15px;
+
+    bottom: 5px;
+
+    width: 145px;
+
+    opacity: 0.72;
+  }
+
+  .hero-text h2 {
+    font-size: 34px;
+  }
+
+  .task-toolbar {
+    align-items: flex-end;
+
+    gap: 12px;
+  }
+
+  .filters {
+    flex-wrap: wrap;
+  }
+
+  .filters button {
+    padding: 7px 10px;
+  }
+
+  .task-count {
+    white-space: nowrap;
+  }
+
+  .task-item {
+    gap: 10px;
+
+    padding: 11px;
+  }
+
+  .category {
+    display: none;
+  }
+
+  .bottom-plants,
+  .bottom-flowers {
+    opacity: 0.35;
+
+    max-width: 110px;
+  }
+}
