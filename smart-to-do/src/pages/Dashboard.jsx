@@ -14,10 +14,21 @@ function Dashboard() {
     loadUser();
   }, []);
 
+  // =========================
+  // LOAD USER
+  // =========================
+
   async function loadUser() {
     const {
       data: { user },
+      error,
     } = await supabase.auth.getUser();
+
+    if (error) {
+      console.error("Get user error:", error);
+      setLoading(false);
+      return;
+    }
 
     setUser(user);
 
@@ -27,6 +38,10 @@ function Dashboard() {
       setLoading(false);
     }
   }
+
+  // =========================
+  // FETCH TASKS
+  // =========================
 
   async function fetchTasks(userId) {
     const { data, error } = await supabase
@@ -46,19 +61,26 @@ function Dashboard() {
     setLoading(false);
   }
 
+  // =========================
+  // ADD TASK
+  // =========================
+
   async function addTask(e) {
     e.preventDefault();
 
-    if (!newTask.trim() || !user) {
+    const trimmedTask = newTask.trim();
+
+    if (!trimmedTask || !user) {
       return;
     }
 
     const { data, error } = await supabase
       .from("tasks")
       .insert({
-        title: newTask.trim(),
-        category,
+        title: trimmedTask,
+        category: category,
         user_id: user.id,
+        completed: false,
       })
       .select()
       .single();
@@ -68,14 +90,20 @@ function Dashboard() {
       return;
     }
 
-    setTasks((previous) => [
-      data,
-      ...previous,
-    ]);
+    if (data) {
+      setTasks((previous) => [
+        data,
+        ...previous,
+      ]);
+    }
 
     setNewTask("");
     setCategory("Personal");
   }
+
+  // =========================
+  // TOGGLE TASK
+  // =========================
 
   async function toggleTask(task) {
     const updatedStatus = !task.completed;
@@ -85,13 +113,11 @@ function Dashboard() {
       .update({
         completed: updatedStatus,
       })
-      .eq("id", task.id);
+      .eq("id", task.id)
+      .eq("user_id", user.id);
 
     if (error) {
-      console.error(
-        "Update task error:",
-        error
-      );
+      console.error("Update task error:", error);
       return;
     }
 
@@ -107,17 +133,19 @@ function Dashboard() {
     );
   }
 
+  // =========================
+  // DELETE TASK
+  // =========================
+
   async function deleteTask(id) {
     const { error } = await supabase
       .from("tasks")
       .delete()
-      .eq("id", id);
+      .eq("id", id)
+      .eq("user_id", user.id);
 
     if (error) {
-      console.error(
-        "Delete task error:",
-        error
-      );
+      console.error("Delete task error:", error);
       return;
     }
 
@@ -128,40 +156,54 @@ function Dashboard() {
     );
   }
 
+  // =========================
+  // LOGOUT
+  // =========================
+
   async function logout() {
-    const { error } =
-      await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
 
     if (error) {
-      console.error(
-        "Logout error:",
-        error
-      );
+      console.error("Logout error:", error);
     }
   }
 
-  const filteredTasks = tasks.filter(
-    (task) => {
-      if (filter === "Pending") {
-        return !task.completed;
-      }
+  // =========================
+  // FILTER TASKS
+  // =========================
 
-      if (filter === "Completed") {
-        return task.completed;
-      }
-
-      return true;
+  const filteredTasks = tasks.filter((task) => {
+    if (filter === "Pending") {
+      return !task.completed;
     }
-  );
+
+    if (filter === "Completed") {
+      return task.completed;
+    }
+
+    return true;
+  });
+
+  // =========================
+  // COMPLETED COUNT
+  // =========================
 
   const completedCount = tasks.filter(
     (task) => task.completed
   ).length;
 
+  // =========================
+  // FIRST NAME
+  // =========================
+
   const firstName =
-    user?.user_metadata?.full_name?.split(
-      " "
-    )[0] || "there";
+    user?.user_metadata?.full_name
+      ?.trim()
+      ?.split(/\s+/)[0] || "there";
+
+  // =========================
+  // UI
+  // =========================
 
   return (
     <main className="dashboard">
@@ -250,6 +292,7 @@ function Dashboard() {
             onChange={(e) =>
               setNewTask(e.target.value)
             }
+            aria-label="New task"
           />
 
           <select
@@ -257,7 +300,9 @@ function Dashboard() {
             onChange={(e) =>
               setCategory(e.target.value)
             }
+            aria-label="Task category"
           >
+
             <option value="Personal">
               Personal
             </option>
@@ -273,9 +318,13 @@ function Dashboard() {
             <option value="Shopping">
               Shopping
             </option>
+
           </select>
 
-          <button type="submit">
+          <button
+            type="submit"
+            disabled={!newTask.trim()}
+          >
             <span>+</span>
             Add
           </button>
@@ -298,6 +347,7 @@ function Dashboard() {
             "Pending",
             "Completed",
           ].map((item) => (
+
             <button
               key={item}
               type="button"
@@ -312,6 +362,7 @@ function Dashboard() {
             >
               {item}
             </button>
+
           ))}
 
         </div>
@@ -331,6 +382,8 @@ function Dashboard() {
 
         {loading ? (
 
+          /* LOADING */
+
           <div className="empty">
 
             <div className="loader"></div>
@@ -343,11 +396,14 @@ function Dashboard() {
 
         ) : filteredTasks.length === 0 ? (
 
+          /* NO TASKS */
+
           <div className="empty">
 
             <img
-              src="/assets/empty-task.jpeg"
-              alt="No tasks"
+              src="/assets/empty-task.png"
+              alt="No tasks illustration"
+              className="empty-task-image"
             />
 
             <h3>
@@ -363,13 +419,17 @@ function Dashboard() {
 
         ) : (
 
+          /* TASKS */
+
           filteredTasks.map((task) => (
+
             <TaskItem
               key={task.id}
               task={task}
               toggleTask={toggleTask}
               deleteTask={deleteTask}
             />
+
           ))
 
         )}

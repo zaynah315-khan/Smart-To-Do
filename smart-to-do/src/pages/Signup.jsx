@@ -17,30 +17,28 @@ function Signup({ goToLogin }) {
   async function handleSignup(e) {
     e.preventDefault();
 
-    // Prevent duplicate requests
-    if (loading) return;
-
+    // Clear previous messages
     setError("");
     setMessage("");
 
-    const cleanName = name.trim();
-    const cleanEmail = email.trim().toLowerCase();
+    // Prevent multiple submissions
+    if (loading) {
+      return;
+    }
 
-    if (!cleanName) {
+    // Check name
+    if (!name.trim()) {
       setError("Please enter your full name.");
       return;
     }
 
-    if (!cleanEmail) {
-      setError("Please enter your email address.");
-      return;
-    }
-
+    // Check password
     if (password.length < 6) {
       setError("Password must be at least 6 characters.");
       return;
     }
 
+    // Check matching passwords
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -49,60 +47,54 @@ function Signup({ goToLogin }) {
     setLoading(true);
 
     try {
-      const redirectUrl = window.location.origin;
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
 
-      const { data, error } =
-        await supabase.auth.signUp({
-          email: cleanEmail,
-          password: password,
-
-          options: {
-            emailRedirectTo: redirectUrl,
-
-            data: {
-              full_name: cleanName,
-            },
+        options: {
+          data: {
+            full_name: name.trim(),
           },
-        });
+
+          // After the user confirms the email,
+          // Supabase will return them to the current app.
+          emailRedirectTo: window.location.origin,
+        },
+      });
 
       if (error) {
         console.error("Signup error:", error);
+        setError(error.message);
+        return;
+      }
 
-        if (
-          error.message
-            ?.toLowerCase()
-            .includes("rate limit")
-        ) {
-          setError(
-            "Email sending limit has been reached. Please wait and try again later."
-          );
-        } else {
-          setError(error.message);
-        }
+      /*
+       * Supabase can return a user without a session
+       * when email confirmation is required.
+       */
+
+      if (data?.user && !data?.session) {
+        setMessage(
+          "Account created successfully! Please check your email and confirm your account. After confirmation, you will be taken to Goal Grid."
+        );
+
+        setName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
 
         return;
       }
 
       /*
-       * If Supabase requires email confirmation,
-       * session will normally be null here.
+       * If email confirmation is disabled,
+       * Supabase may immediately create a session.
+       * App.jsx will detect that session and show Dashboard.
        */
-      if (data?.user && !data?.session) {
-        setMessage(
-          "Account created successfully! Please check your email and verify your account. After verification, Goal Grid will open automatically."
-        );
-      } else if (data?.session) {
-        /*
-         * Email confirmation is disabled.
-         * App.jsx will automatically show Dashboard.
-         */
+
+      if (data?.session) {
         setMessage("Account created successfully!");
       }
-
-      setName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
     } catch (err) {
       console.error("Unexpected signup error:", err);
 
@@ -116,34 +108,54 @@ function Signup({ goToLogin }) {
 
   return (
     <main className="auth-page">
+
       <div className="auth-card">
 
-        {/* IMAGE */}
+        {/* =========================
+            SIGNUP IMAGE
+        ========================= */}
+
         <div className="auth-image signup-image">
+
           <img
             src="/assets/signup-illustration.png"
             alt="Signup illustration"
           />
+
         </div>
 
-        {/* CONTENT */}
+
+        {/* =========================
+            SIGNUP CONTENT
+        ========================= */}
+
         <div className="auth-content">
 
-          <h1>Create Account! ✨</h1>
+          <h1>
+            Create Account! ✨
+          </h1>
 
           <p className="subtitle">
             Start organizing your tasks today
           </p>
 
+
+          {/* =========================
+              FORM
+          ========================= */}
+
           <form onSubmit={handleSignup}>
 
-            {/* NAME */}
+            {/* FULL NAME */}
+
             <div className="form-group">
+
               <label htmlFor="name">
                 Full name
               </label>
 
               <div className="input-wrapper">
+
                 <span className="input-icon">
                   👤
                 </span>
@@ -156,48 +168,62 @@ function Signup({ goToLogin }) {
                   onChange={(e) =>
                     setName(e.target.value)
                   }
+                  autoComplete="name"
                   required
                 />
+
               </div>
+
             </div>
 
+
             {/* EMAIL */}
+
             <div className="form-group">
-              <label htmlFor="email">
+
+              <label htmlFor="signup-email">
                 Email address
               </label>
 
               <div className="input-wrapper">
+
                 <span className="input-icon">
                   ✉
                 </span>
 
                 <input
-                  id="email"
+                  id="signup-email"
                   type="email"
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) =>
                     setEmail(e.target.value)
                   }
+                  autoComplete="email"
                   required
                 />
+
               </div>
+
             </div>
 
+
             {/* PASSWORD */}
+
             <div className="form-group">
-              <label htmlFor="password">
+
+              <label htmlFor="signup-password">
                 Password
               </label>
 
               <div className="input-wrapper">
+
                 <span className="input-icon">
                   🔒
                 </span>
 
                 <input
-                  id="password"
+                  id="signup-password"
                   type={
                     showPassword
                       ? "text"
@@ -208,6 +234,7 @@ function Signup({ goToLogin }) {
                   onChange={(e) =>
                     setPassword(e.target.value)
                   }
+                  autoComplete="new-password"
                   required
                 />
 
@@ -219,19 +246,30 @@ function Signup({ goToLogin }) {
                       (previous) => !previous
                     )
                   }
+                  aria-label={
+                    showPassword
+                      ? "Hide password"
+                      : "Show password"
+                  }
                 >
                   {showPassword ? "🙈" : "👁"}
                 </button>
+
               </div>
+
             </div>
 
+
             {/* CONFIRM PASSWORD */}
+
             <div className="form-group">
+
               <label htmlFor="confirmPassword">
                 Confirm password
               </label>
 
               <div className="input-wrapper">
+
                 <span className="input-icon">
                   🔒
                 </span>
@@ -250,6 +288,7 @@ function Signup({ goToLogin }) {
                       e.target.value
                     )
                   }
+                  autoComplete="new-password"
                   required
                 />
 
@@ -261,29 +300,42 @@ function Signup({ goToLogin }) {
                       (previous) => !previous
                     )
                   }
+                  aria-label={
+                    showConfirmPassword
+                      ? "Hide confirm password"
+                      : "Show confirm password"
+                  }
                 >
                   {showConfirmPassword
                     ? "🙈"
                     : "👁"}
                 </button>
+
               </div>
+
             </div>
 
+
             {/* ERROR */}
+
             {error && (
               <p className="error">
                 {error}
               </p>
             )}
 
+
             {/* SUCCESS */}
+
             {message && (
               <p className="success">
                 {message}
               </p>
             )}
 
-            {/* BUTTON */}
+
+            {/* SIGN UP BUTTON */}
+
             <button
               type="submit"
               className="primary-button pink-button"
@@ -296,7 +348,13 @@ function Signup({ goToLogin }) {
 
           </form>
 
+
+          {/* =========================
+              LOGIN
+          ========================= */}
+
           <p className="switch-text">
+
             Already have an account?
 
             <button
@@ -305,10 +363,13 @@ function Signup({ goToLogin }) {
             >
               Login
             </button>
+
           </p>
 
         </div>
+
       </div>
+
     </main>
   );
 }

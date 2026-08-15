@@ -13,45 +13,56 @@ function App() {
   useEffect(() => {
     let mounted = true;
 
-    async function loadSession() {
-      const {
-        data,
-        error,
-      } = await supabase.auth.getSession();
+    async function initializeAuth() {
+      try {
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
 
-      if (error) {
-        console.error(
-          "Get session error:",
-          error
-        );
-      }
+        if (error) {
+          console.error("Session error:", error);
+        }
 
-      if (mounted) {
-        setSession(data?.session ?? null);
-        setLoading(false);
+        if (!mounted) return;
+
+        setSession(session ?? null);
+
+        if (session) {
+          setPage("dashboard");
+        }
+      } catch (error) {
+        console.error("Auth initialization error:", error);
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
       }
     }
 
-    loadSession();
+    initializeAuth();
 
     const {
-      data: authData,
+      data: { subscription },
     } = supabase.auth.onAuthStateChange(
-      (_event, newSession) => {
+      (event, newSession) => {
         if (!mounted) return;
 
-        setSession(newSession);
+        console.log("Supabase auth event:", event);
+
+        setSession(newSession ?? null);
 
         if (newSession) {
           setPage("dashboard");
+        } else if (event === "SIGNED_OUT") {
+          setPage("login");
         }
       }
     );
 
     return () => {
       mounted = false;
-
-      authData.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
 
@@ -59,7 +70,6 @@ function App() {
     return (
       <main className="auth-page">
         <div className="auth-card">
-
           <div className="empty">
             <div className="loader"></div>
 
@@ -67,40 +77,26 @@ function App() {
               Checking your account...
             </p>
           </div>
-
         </div>
       </main>
     );
   }
 
-  /*
-   * VERIFIED / LOGGED-IN USER
-   */
   if (session) {
     return <Dashboard />;
   }
 
-  /*
-   * SIGNUP
-   */
   if (page === "signup") {
     return (
       <Signup
-        goToLogin={() =>
-          setPage("login")
-        }
+        goToLogin={() => setPage("login")}
       />
     );
   }
 
-  /*
-   * LOGIN
-   */
   return (
     <Login
-      goToSignup={() =>
-        setPage("signup")
-      }
+      goToSignup={() => setPage("signup")}
     />
   );
 }
