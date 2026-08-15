@@ -17,28 +17,26 @@ function Signup({ goToLogin }) {
   async function handleSignup(e) {
     e.preventDefault();
 
-    // Clear previous messages
     setError("");
     setMessage("");
 
-    // Prevent multiple submissions
-    if (loading) {
-      return;
-    }
+    if (loading) return;
 
-    // Check name
     if (!name.trim()) {
       setError("Please enter your full name.");
       return;
     }
 
-    // Check password
+    if (!email.trim()) {
+      setError("Please enter your email address.");
+      return;
+    }
+
     if (password.length < 6) {
       setError("Password must be at least 6 characters.");
       return;
     }
 
-    // Check matching passwords
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -47,18 +45,23 @@ function Signup({ goToLogin }) {
     setLoading(true);
 
     try {
+      const redirectUrl = window.location.origin;
+
       const { data, error } = await supabase.auth.signUp({
         email: email.trim(),
-        password,
+        password: password,
 
         options: {
           data: {
             full_name: name.trim(),
           },
 
-          // After the user confirms the email,
-          // Supabase will return them to the current app.
-          emailRedirectTo: window.location.origin,
+          // Automatically uses the URL from which the app is opened.
+          // Example:
+          // http://localhost:5174
+          // or
+          // http://192.168.x.x:5174
+          emailRedirectTo: redirectUrl,
         },
       });
 
@@ -68,14 +71,9 @@ function Signup({ goToLogin }) {
         return;
       }
 
-      /*
-       * Supabase can return a user without a session
-       * when email confirmation is required.
-       */
-
       if (data?.user && !data?.session) {
         setMessage(
-          "Account created successfully! Please check your email and confirm your account. After confirmation, you will be taken to Goal Grid."
+          "Account created successfully! Please check your email and confirm your account."
         );
 
         setName("");
@@ -86,21 +84,13 @@ function Signup({ goToLogin }) {
         return;
       }
 
-      /*
-       * If email confirmation is disabled,
-       * Supabase may immediately create a session.
-       * App.jsx will detect that session and show Dashboard.
-       */
-
       if (data?.session) {
         setMessage("Account created successfully!");
       }
     } catch (err) {
       console.error("Unexpected signup error:", err);
 
-      setError(
-        "Something went wrong. Please try again."
-      );
+      setError("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -108,54 +98,34 @@ function Signup({ goToLogin }) {
 
   return (
     <main className="auth-page">
-
       <div className="auth-card">
 
-        {/* =========================
-            SIGNUP IMAGE
-        ========================= */}
-
+        {/* SIGNUP IMAGE */}
         <div className="auth-image signup-image">
-
           <img
             src="/assets/signup-illustration.png"
             alt="Signup illustration"
           />
-
         </div>
 
-
-        {/* =========================
-            SIGNUP CONTENT
-        ========================= */}
-
+        {/* SIGNUP CONTENT */}
         <div className="auth-content">
 
-          <h1>
-            Create Account! ✨
-          </h1>
+          <h1>Create Account! ✨</h1>
 
           <p className="subtitle">
             Start organizing your tasks today
           </p>
 
-
-          {/* =========================
-              FORM
-          ========================= */}
-
           <form onSubmit={handleSignup}>
 
             {/* FULL NAME */}
-
             <div className="form-group">
-
               <label htmlFor="name">
                 Full name
               </label>
 
               <div className="input-wrapper">
-
                 <span className="input-icon">
                   👤
                 </span>
@@ -165,28 +135,20 @@ function Signup({ goToLogin }) {
                   type="text"
                   placeholder="Enter your full name"
                   value={name}
-                  onChange={(e) =>
-                    setName(e.target.value)
-                  }
+                  onChange={(e) => setName(e.target.value)}
                   autoComplete="name"
                   required
                 />
-
               </div>
-
             </div>
 
-
             {/* EMAIL */}
-
             <div className="form-group">
-
               <label htmlFor="signup-email">
                 Email address
               </label>
 
               <div className="input-wrapper">
-
                 <span className="input-icon">
                   ✉
                 </span>
@@ -196,44 +158,30 @@ function Signup({ goToLogin }) {
                   type="email"
                   placeholder="Enter your email"
                   value={email}
-                  onChange={(e) =>
-                    setEmail(e.target.value)
-                  }
+                  onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
                   required
                 />
-
               </div>
-
             </div>
 
-
             {/* PASSWORD */}
-
             <div className="form-group">
-
               <label htmlFor="signup-password">
                 Password
               </label>
 
               <div className="input-wrapper">
-
                 <span className="input-icon">
                   🔒
                 </span>
 
                 <input
                   id="signup-password"
-                  type={
-                    showPassword
-                      ? "text"
-                      : "password"
-                  }
+                  type={showPassword ? "text" : "password"}
                   placeholder="Create a password"
                   value={password}
-                  onChange={(e) =>
-                    setPassword(e.target.value)
-                  }
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete="new-password"
                   required
                 />
@@ -242,9 +190,7 @@ function Signup({ goToLogin }) {
                   type="button"
                   className="icon-button"
                   onClick={() =>
-                    setShowPassword(
-                      (previous) => !previous
-                    )
+                    setShowPassword((previous) => !previous)
                   }
                   aria-label={
                     showPassword
@@ -254,22 +200,16 @@ function Signup({ goToLogin }) {
                 >
                   {showPassword ? "🙈" : "👁"}
                 </button>
-
               </div>
-
             </div>
 
-
             {/* CONFIRM PASSWORD */}
-
             <div className="form-group">
-
               <label htmlFor="confirmPassword">
                 Confirm password
               </label>
 
               <div className="input-wrapper">
-
                 <span className="input-icon">
                   🔒
                 </span>
@@ -284,9 +224,7 @@ function Signup({ goToLogin }) {
                   placeholder="Confirm your password"
                   value={confirmPassword}
                   onChange={(e) =>
-                    setConfirmPassword(
-                      e.target.value
-                    )
+                    setConfirmPassword(e.target.value)
                   }
                   autoComplete="new-password"
                   required
@@ -306,36 +244,26 @@ function Signup({ goToLogin }) {
                       : "Show confirm password"
                   }
                 >
-                  {showConfirmPassword
-                    ? "🙈"
-                    : "👁"}
+                  {showConfirmPassword ? "🙈" : "👁"}
                 </button>
-
               </div>
-
             </div>
 
-
             {/* ERROR */}
-
             {error && (
               <p className="error">
                 {error}
               </p>
             )}
 
-
             {/* SUCCESS */}
-
             {message && (
               <p className="success">
                 {message}
               </p>
             )}
 
-
             {/* SIGN UP BUTTON */}
-
             <button
               type="submit"
               className="primary-button pink-button"
@@ -345,16 +273,10 @@ function Signup({ goToLogin }) {
                 ? "Creating account..."
                 : "Sign Up"}
             </button>
-
           </form>
 
-
-          {/* =========================
-              LOGIN
-          ========================= */}
-
+          {/* LOGIN */}
           <p className="switch-text">
-
             Already have an account?
 
             <button
@@ -363,13 +285,10 @@ function Signup({ goToLogin }) {
             >
               Login
             </button>
-
           </p>
 
         </div>
-
       </div>
-
     </main>
   );
 }
